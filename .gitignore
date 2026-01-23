@@ -37,9 +37,6 @@ build/
 *.rsuser
 *.sln.docstates
 
-# Rider
-.idea/
-
 # React / Node
 node_modules/
 npm-debug.log*
