@@ -1,5 +1,5 @@
 # DoToday
-Why wait until tomorrow what you can do today? "Do Today" is just a simple task/checklist app where
+Why put off to tomorrow what you can do today? "Do Today" is just a simple task/checklist app where
 line items are grouped into lists. The main intent is to be able to organize line items that can be
 checked/unchecked so that important things don't get lost into the ether or delayed forever.
 
@@ -53,7 +53,7 @@ intentional and changes are generally proper diffs instead of drop/creates.
   stateless, lightweight client so we don't need to complicate things with making it a singleton
   or anything either.
 
-### Up Next
+### Possible v.Next work
 The following features I either haven't had an immediate demand for or didn't have time to
 implement yet. These features aren't necessarily guaranteed to be implemented, but this is kind
 of a brainstorming area.
@@ -63,3 +63,6 @@ of a brainstorming area.
 - Auth/Users? - if we intend to support a multi-user scenario
 - Details - if we add more fields, ie. a description, to tasks/lists, we'll need a view for it
 
+### TO DO
+[ ] - Unit tests
+[ ] - Containerize
