@@ -1,6 +1,57 @@
 @DoToday.Server_HostAddress = http://localhost:5042
 
-GET {{DoToday.Server_HostAddress}}/weatherforecast/
+### Get all lists
+GET {{DoToday.Server_HostAddress}}/api/lists
 Accept: application/json
 
-###
+### Get list by id
+GET {{DoToday.Server_HostAddress}}/api/lists/1
+Accept: application/json
+
+### Create a new list
+POST {{DoToday.Server_HostAddress}}/api/lists
+Content-Type: application/json
+
+{
+  "name": "Groceries"
+}
+
+### Update a list
+PUT {{DoToday.Server_HostAddress}}/api/lists/1
+Content-Type: application/json
+
+{
+  "name": "Shopping List"
+}
+
+### Delete a list
+DELETE {{DoToday.Server_HostAddress}}/api/lists/1
+
+### Create a task in a list
+POST {{DoToday.Server_HostAddress}}/api/lists/1/tasks
+Content-Type: application/json
+
+{
+  "title": "Buy milk"
+}
+
+### Get a task
+GET {{DoToday.Server_HostAddress}}/api/lists/1/tasks/1
+Accept: application/json
+
+### Update a task
+PUT {{DoToday.Server_HostAddress}}/api/lists/1/tasks/1
+Content-Type: application/json
+
+{
+  "title": "Buy oat milk",
+  "isCompleted": true
+}
+
+### Mark task as completed
+PUT {{DoToday.Server_HostAddress}}/api/lists/1/tasks/1
+Content-Type: application/json
+
+{
+  "isCompleted": true
+}

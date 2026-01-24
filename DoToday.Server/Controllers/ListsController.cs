@@ -1,0 +1,73 @@
+using DoToday.Server.DTOs.Lists;
+using DoToday.Server.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+
+namespace DoToday.Server.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class ListsController : ControllerBase
+{
+    private readonly ITaskListService _service;
+
+    public ListsController(ITaskListService service)
+    {
+        _service = service;
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<GetTaskListsResponse>> GetAll()
+    {
+        var lists = await _service.GetAllListsAsync();
+        return Ok(new GetTaskListsResponse { Lists = lists });
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<GetTaskListResponse>> GetById(int id)
+    {
+        var list = await _service.GetListByIdAsync(id);
+        if (list == null) return NotFound();
+
+        return Ok(new GetTaskListResponse { List = list });
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<CreateTaskListResponse>> Create(CreateTaskListRequest request)
+    {
+        try
+        {
+            var list = await _service.CreateListAsync(request);
+            var response = new CreateTaskListResponse { List = list };
+            return CreatedAtAction(nameof(GetById), new { id = list.Id }, response);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(new { message = ex.Message });
+        }
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult<UpdateTaskListResponse>> Update(int id, UpdateTaskListRequest request)
+    {
+        try
+        {
+            var list = await _service.UpdateListAsync(id, request);
+            if (list == null) return NotFound();
+
+            return Ok(new UpdateTaskListResponse { List = list });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Conflict(new { message = ex.Message });
+        }
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var deleted = await _service.DeleteListAsync(id);
+        if (!deleted) return NotFound();
+
+        return NoContent();
+    }
+}
