@@ -72,7 +72,7 @@ export function ListsPage() {
       </Typography>
 
       <Box sx={{ mb: 3 }}>
-        <AddItemInput placeholder="New list name" onAdd={handleAddList} />
+              <AddItemInput placeholder="New list name" onAdd={handleAddList} maxLength={200} />
       </Box>
 
       <TableContainer component={Paper}>

@@ -92,7 +92,7 @@ export function ListDetailPage() {
       </Typography>
 
       <Box sx={{ mb: 3 }}>
-        <AddItemInput placeholder="New task" onAdd={handleAddTask} />
+              <AddItemInput placeholder="New task" onAdd={handleAddTask} maxLength={500} />
       </Box>
 
       <Paper>

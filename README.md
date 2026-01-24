@@ -46,6 +46,12 @@ intentional and changes are generally proper diffs instead of drop/creates.
 ### Outstanding Questions
 - List names are unique, should tasks be unique per list?
 - List deletion is currently permanent, is there a use case for a soft delete/hide?
+- I couldn't decide if I needed to add a layer of abstraction around the API client calls in
+  the React client... these are simple CRUD calls but if we ever need to combine API calls or
+  want to add client side caching or optimistic updates then it might make some sense to do it
+  but, for now, I don't necessarily need this so I'm going to keep it simple; it's a simple,
+  stateless, lightweight client so we don't need to complicate things with making it a singleton
+  or anything either.
 
 ### Up Next
 The following features I either haven't had an immediate demand for or didn't have time to
