@@ -19,13 +19,17 @@ This solution is comprised of two separate projects:
 The intent is to have a containerizable lightweight application that is easily deployed and
 maintained (ie. on a Raspberry Pi)
 
-### DoTodayServer
+### DoToday Server
 This is a pretty typical .NET Core WebAPI project leveraging the Entity Framework provider for
 SQLite.
 
 - Controller: API endpoints/routing layer
 - Services: Business logic layer
 - Repositories: Data access layer
+
+### DoToday Client
+Mobile friendly, React backed by TypeScript. The goal is to keep this as lightweight as possible,
+aside from validation, there should be little to no business logic at this layer.
 
 ## Getting Started/Installation
 

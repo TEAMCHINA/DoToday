@@ -1,6 +1,7 @@
 using DoToday.Server.DTOs.Lists;
 using DoToday.Server.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace DoToday.Server.Controllers;
 
@@ -15,14 +16,14 @@ public class ListsController : ControllerBase
         _service = service;
     }
 
-    [HttpGet]
+    [HttpGet(Name = "GetLists")]
     public async Task<ActionResult<GetTaskListsResponse>> GetAll()
     {
         var lists = await _service.GetAllListsAsync();
         return Ok(new GetTaskListsResponse { Lists = lists });
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id}", Name = "GetListById")]
     public async Task<ActionResult<GetTaskListResponse>> GetById(int id)
     {
         var list = await _service.GetListByIdAsync(id);
@@ -31,7 +32,7 @@ public class ListsController : ControllerBase
         return Ok(new GetTaskListResponse { List = list });
     }
 
-    [HttpPost]
+    [HttpPost(Name = "CreateList")]
     public async Task<ActionResult<CreateTaskListResponse>> Create(CreateTaskListRequest request)
     {
         try
@@ -46,7 +47,7 @@ public class ListsController : ControllerBase
         }
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id}", Name = "UpdateList")]
     public async Task<ActionResult<UpdateTaskListResponse>> Update(int id, UpdateTaskListRequest request)
     {
         try
@@ -62,7 +63,7 @@ public class ListsController : ControllerBase
         }
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id}", Name = "DeleteList")]
     public async Task<IActionResult> Delete(int id)
     {
         var deleted = await _service.DeleteListAsync(id);

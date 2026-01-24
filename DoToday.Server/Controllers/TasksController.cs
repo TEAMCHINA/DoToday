@@ -15,7 +15,7 @@ public class TasksController : ControllerBase
         _service = service;
     }
 
-    [HttpPost]
+    [HttpPost(Name = "CreateTask")]
     public async Task<ActionResult<CreateTaskResponse>> Create(int listId, CreateTaskRequest request)
     {
         var task = await _service.CreateTaskAsync(listId, request);
@@ -25,7 +25,7 @@ public class TasksController : ControllerBase
         return Created(string.Empty, response);
     }
 
-    [HttpPut("{taskId}")]
+    [HttpPut("{taskId}", Name = "UpdateTask")]
     public async Task<ActionResult<UpdateTaskResponse>> Update(int listId, int taskId, UpdateTaskRequest request)
     {
         var task = await _service.UpdateTaskStatusAsync(listId, taskId, request);
