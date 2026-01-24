@@ -35,16 +35,11 @@ Content-Type: application/json
   "title": "Buy milk"
 }
 
-### Get a task
-GET {{DoToday.Server_HostAddress}}/api/lists/1/tasks/1
-Accept: application/json
-
 ### Update a task
 PUT {{DoToday.Server_HostAddress}}/api/lists/1/tasks/1
 Content-Type: application/json
 
 {
-  "title": "Buy oat milk",
   "isCompleted": true
 }
 

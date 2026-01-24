@@ -22,22 +22,13 @@ public class TasksController : ControllerBase
         if (task == null) return NotFound(new { message = "List not found" });
 
         var response = new CreateTaskResponse { Task = task };
-        return CreatedAtAction(nameof(GetById), new { listId, taskId = task.Id }, response);
-    }
-
-    [HttpGet("{taskId}")]
-    public async Task<ActionResult<GetTaskResponse>> GetById(int listId, int taskId)
-    {
-        var task = await _service.GetTaskAsync(listId, taskId);
-        if (task == null) return NotFound();
-
-        return Ok(new GetTaskResponse { Task = task });
+        return Created(string.Empty, response);
     }
 
     [HttpPut("{taskId}")]
     public async Task<ActionResult<UpdateTaskResponse>> Update(int listId, int taskId, UpdateTaskRequest request)
     {
-        var task = await _service.UpdateTaskAsync(listId, taskId, request);
+        var task = await _service.UpdateTaskStatusAsync(listId, taskId, request);
         if (task == null) return NotFound();
 
         return Ok(new UpdateTaskResponse { Task = task });

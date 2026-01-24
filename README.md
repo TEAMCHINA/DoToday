@@ -51,4 +51,5 @@ of a brainstorming area.
 - More thorough validation - mainly leveraging Data Annotations, sufficient for simple validation
 - More thorough testing 
 - Auth/Users? - if we intend to support a multi-user scenario
+- Details - if we add more fields, ie. a description, to tasks/lists, we'll need a view for it
 

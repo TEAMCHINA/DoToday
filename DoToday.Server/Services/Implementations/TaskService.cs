@@ -17,14 +17,6 @@ public class TaskService : ITaskService
         _listRepository = listRepository;
     }
 
-    public async Task<TaskDto?> GetTaskAsync(int listId, int taskId)
-    {
-        var task = await _taskRepository.GetByIdAsync(listId, taskId);
-        if (task == null) return null;
-
-        return MapToDto(task);
-    }
-
     public async Task<TaskDto?> CreateTaskAsync(int listId, CreateTaskRequest request)
     {
         var list = await _listRepository.GetByIdAsync(listId);
@@ -41,15 +33,10 @@ public class TaskService : ITaskService
         return MapToDto(task);
     }
 
-    public async Task<TaskDto?> UpdateTaskAsync(int listId, int taskId, UpdateTaskRequest request)
+    public async Task<TaskDto?> UpdateTaskStatusAsync(int listId, int taskId, UpdateTaskRequest request)
     {
         var task = await _taskRepository.GetByIdAsync(listId, taskId);
         if (task == null) return null;
-
-        if (request.Title != null)
-        {
-            task.Title = request.Title;
-        }
 
         if (request.IsCompleted.HasValue)
         {
