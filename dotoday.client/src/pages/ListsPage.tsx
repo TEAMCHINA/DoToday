@@ -71,10 +71,6 @@ export function ListsPage() {
         My Lists
       </Typography>
 
-      <Box sx={{ mb: 3 }}>
-              <AddItemInput placeholder="New list name" onAdd={handleAddList} maxLength={200} />
-      </Box>
-
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -87,7 +83,7 @@ export function ListsPage() {
             {lists.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={2} align="center">
-                  No lists yet. Create one above!
+                  No lists yet. Create one below!
                 </TableCell>
               </TableRow>
             ) : (
@@ -113,6 +109,10 @@ export function ListsPage() {
           </TableBody>
         </Table>
       </TableContainer>
+
+      <Box sx={{ mt: 3 }}>
+        <AddItemInput placeholder="New list name" onAdd={handleAddList} maxLength={200} />
+      </Box>
     </Container>
   );
 }

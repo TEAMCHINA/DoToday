@@ -91,15 +91,11 @@ export function ListDetailPage() {
         {list.name}
       </Typography>
 
-      <Box sx={{ mb: 3 }}>
-              <AddItemInput placeholder="New task" onAdd={handleAddTask} maxLength={500} />
-      </Box>
-
       <Paper>
         <List>
           {(list.tasks?.length ?? 0) === 0 ? (
             <ListItem>
-              <ListItemText primary="No tasks yet. Add one above!" />
+              <ListItemText primary="No tasks yet. Add one below!" />
             </ListItem>
           ) : (
             list.tasks!.map((task) => (
@@ -126,6 +122,10 @@ export function ListDetailPage() {
           )}
         </List>
       </Paper>
+
+      <Box sx={{ mt: 3 }}>
+        <AddItemInput placeholder="New task" onAdd={handleAddTask} maxLength={500} />
+      </Box>
     </Container>
   );
 }
