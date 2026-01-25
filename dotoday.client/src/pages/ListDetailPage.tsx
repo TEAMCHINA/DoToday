@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   Container,
   Typography,
@@ -15,54 +15,51 @@ import {
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { AddItemInput } from '@/components/AddItemInput';
-import { DoTodayApiClient, TaskListDto, CreateTaskRequest, UpdateTaskRequest } from '@/api/DoTodayApiClient';
+import { DoTodayApiClient, CreateTaskRequest, UpdateTaskRequest } from '@/api/DoTodayApiClient';
 
 const apiClient = new DoTodayApiClient();
 
 export function ListDetailPage() {
   const { listId } = useParams<{ listId: string }>();
-  const [list, setList] = useState<TaskListDto | null>(null);
-  const [loading, setLoading] = useState(true);
+  const queryClient = useQueryClient();
+  const listIdNum = listId ? parseInt(listId, 10) : 0;
 
-  const fetchList = async () => {
-    if (!listId) return;
-    try {
-      const response = await apiClient.getListById(parseInt(listId, 10));
-      setList(response.list ?? null);
-    } catch (error) {
-      console.error('Failed to fetch list:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { data: list, isLoading } = useQuery({
+    queryKey: ['list', listIdNum],
+    queryFn: async () => {
+      const response = await apiClient.getListById(listIdNum);
+      return response.list ?? null;
+    },
+    enabled: !!listId,
+  });
 
-  useEffect(() => {
-    fetchList();
-  }, [listId]);
-
-  const handleAddTask = async (title: string) => {
-    if (!listId) return;
-    try {
+  const createTaskMutation = useMutation({
+    mutationFn: (title: string) => {
       const request = new CreateTaskRequest({ title });
-      await apiClient.createTask(parseInt(listId, 10), request);
-      await fetchList();
-    } catch (error) {
+      return apiClient.createTask(listIdNum, request);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['list', listIdNum] });
+    },
+    onError: (error) => {
       console.error('Failed to create task:', error);
-    }
-  };
+    },
+  });
 
-  const handleToggleTask = async (taskId: number, currentStatus: boolean) => {
-    if (!listId) return;
-    try {
-      const request = new UpdateTaskRequest({ isCompleted: !currentStatus });
-      await apiClient.updateTask(parseInt(listId, 10), taskId, request);
-      await fetchList();
-    } catch (error) {
+  const updateTaskMutation = useMutation({
+    mutationFn: ({ taskId, isCompleted }: { taskId: number; isCompleted: boolean }) => {
+      const request = new UpdateTaskRequest({ isCompleted });
+      return apiClient.updateTask(listIdNum, taskId, request);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['list', listIdNum] });
+    },
+    onError: (error) => {
       console.error('Failed to update task:', error);
-    }
-  };
+    },
+  });
 
-  if (loading) {
+  if (isLoading) {
     return (
       <Container maxWidth="md" sx={{ mt: 4 }}>
         <Typography>Loading...</Typography>
@@ -100,7 +97,7 @@ export function ListDetailPage() {
           ) : (
             list.tasks!.map((task) => (
               <ListItem key={task.id} disablePadding>
-                <ListItemButton onClick={() => handleToggleTask(task.id!, task.isCompleted!)}>
+                <ListItemButton onClick={() => updateTaskMutation.mutate({ taskId: task.id!, isCompleted: !task.isCompleted })}>
                   <ListItemIcon>
                     <Checkbox
                       edge="start"
@@ -124,7 +121,7 @@ export function ListDetailPage() {
       </Paper>
 
       <Box sx={{ mt: 3 }}>
-        <AddItemInput placeholder="New task" onAdd={handleAddTask} maxLength={500} />
+        <AddItemInput placeholder="New task" onAdd={(title) => createTaskMutation.mutate(title)} maxLength={500} />
       </Box>
     </Container>
   );

@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   Container,
   Typography,
@@ -15,49 +15,45 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { AddItemInput } from '@/components/AddItemInput';
-import { DoTodayApiClient, TaskListSummaryDto, CreateTaskListRequest } from '@/api/DoTodayApiClient';
+import { DoTodayApiClient, CreateTaskListRequest } from '@/api/DoTodayApiClient';
 
 const apiClient = new DoTodayApiClient();
 
 export function ListsPage() {
-  const [lists, setLists] = useState<TaskListSummaryDto[]>([]);
-  const [loading, setLoading] = useState(true);
+  const queryClient = useQueryClient();
 
-  const fetchLists = async () => {
-    try {
+  const { data: lists = [], isLoading } = useQuery({
+    queryKey: ['lists'],
+    queryFn: async () => {
       const response = await apiClient.getLists();
-      setLists(response.lists ?? []);
-    } catch (error) {
-      console.error('Failed to fetch lists:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+      return response.lists ?? [];
+    },
+  });
 
-  useEffect(() => {
-    fetchLists();
-  }, []);
-
-  const handleAddList = async (name: string) => {
-    try {
+  const createListMutation = useMutation({
+    mutationFn: (name: string) => {
       const request = new CreateTaskListRequest({ name });
-      await apiClient.createList(request);
-      await fetchLists();
-    } catch (error) {
+      return apiClient.createList(request);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['lists'] });
+    },
+    onError: (error) => {
       console.error('Failed to create list:', error);
-    }
-  };
+    },
+  });
 
-  const handleDeleteList = async (id: number) => {
-    try {
-      await apiClient.deleteList(id);
-      await fetchLists();
-    } catch (error) {
+  const deleteListMutation = useMutation({
+    mutationFn: (id: number) => apiClient.deleteList(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['lists'] });
+    },
+    onError: (error) => {
       console.error('Failed to delete list:', error);
-    }
-  };
+    },
+  });
 
-  if (loading) {
+  if (isLoading) {
     return (
       <Container maxWidth="md" sx={{ mt: 4 }}>
         <Typography>Loading...</Typography>
@@ -96,7 +92,7 @@ export function ListsPage() {
                   </TableCell>
                   <TableCell align="right">
                     <IconButton
-                      onClick={() => handleDeleteList(list.id!)}
+                      onClick={() => deleteListMutation.mutate(list.id!)}
                       color="error"
                       size="small"
                     >
@@ -111,7 +107,7 @@ export function ListsPage() {
       </TableContainer>
 
       <Box sx={{ mt: 3 }}>
-        <AddItemInput placeholder="New list name" onAdd={handleAddList} maxLength={200} />
+        <AddItemInput placeholder="New list name" onAdd={(name) => createListMutation.mutate(name)} maxLength={200} />
       </Box>
     </Container>
   );

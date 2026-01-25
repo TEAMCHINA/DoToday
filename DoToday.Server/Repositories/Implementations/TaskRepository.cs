@@ -16,6 +16,10 @@ public class TaskRepository : ITaskRepository
 
     public async Task<TaskItem?> GetByIdAsync(int listId, int taskId)
     {
+        // Task IDs should be unique while we're using SQL/SQLite, but if we move to a document store or
+        // something where task IDs are only unique in the context of their parent list, then we'll need
+        // both IDs, but this also protects us against data anomalies where a change is requested from a
+        // list that doesn't contain the task.
         return await _context.TaskItems
             .FirstOrDefaultAsync(t => t.Id == taskId && t.ListId == listId);
     }
