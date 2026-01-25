@@ -16,6 +16,7 @@ public class TasksController : ControllerBase
     }
 
     [HttpPost(Name = "CreateTask")]
+    [ProducesResponseType(typeof(CreateTaskResponse), StatusCodes.Status201Created)]
     public async Task<ActionResult<CreateTaskResponse>> Create(int listId, CreateTaskRequest request)
     {
         var task = await _service.CreateTaskAsync(listId, request);

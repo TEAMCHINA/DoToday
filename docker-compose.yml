@@ -1,0 +1,13 @@
+services:
+  dotoday:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - dotoday-data:/data
+    environment:
+      - DB_PATH=/data/dotoday.db
+      - ASPNETCORE_ENVIRONMENT=Production
+
+volumes:
+  dotoday-data:

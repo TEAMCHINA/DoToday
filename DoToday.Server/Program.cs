@@ -8,8 +8,9 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add DbContext with SQLite
+var dbPath = Environment.GetEnvironmentVariable("DB_PATH") ?? "dotoday.db";
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite("Data Source=dotoday.db"));
+    options.UseSqlite($"Data Source={dbPath}"));
 
 // Register repositories
 builder.Services.AddScoped<ITaskListRepository, TaskListRepository>();
@@ -41,7 +42,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+if (app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 app.UseAuthorization();
 app.MapControllers();
 app.MapFallbackToFile("/index.html");

@@ -1,6 +1,6 @@
-import { ReactElement } from 'react';
-import { render, RenderOptions } from '@testing-library/react';
-import { MemoryRouter, MemoryRouterProps } from 'react-router-dom';
+import type { ReactElement } from 'react';
+import { render, type RenderOptions } from '@testing-library/react';
+import { MemoryRouter, type MemoryRouterProps } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';

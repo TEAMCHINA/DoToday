@@ -33,6 +33,7 @@ public class ListsController : ControllerBase
     }
 
     [HttpPost(Name = "CreateList")]
+    [ProducesResponseType(typeof(CreateTaskListResponse), StatusCodes.Status201Created)]
     public async Task<ActionResult<CreateTaskListResponse>> Create(CreateTaskListRequest request)
     {
         try

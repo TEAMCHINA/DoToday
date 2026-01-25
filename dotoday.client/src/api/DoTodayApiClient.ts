@@ -16,7 +16,7 @@ export interface IDoTodayApiClient {
 
     /**
      * @param body (optional) 
-     * @return OK
+     * @return Created
      */
     createList(body: CreateTaskListRequest | undefined): Promise<CreateTaskListResponse>;
 
@@ -38,7 +38,7 @@ export interface IDoTodayApiClient {
 
     /**
      * @param body (optional) 
-     * @return OK
+     * @return Created
      */
     createTask(listId: number, body: CreateTaskRequest | undefined): Promise<CreateTaskResponse>;
 
@@ -98,7 +98,7 @@ export class DoTodayApiClient implements IDoTodayApiClient {
 
     /**
      * @param body (optional) 
-     * @return OK
+     * @return Created
      */
     createList(body: CreateTaskListRequest | undefined): Promise<CreateTaskListResponse> {
         let url_ = this.baseUrl + "/api/Lists";
@@ -123,12 +123,12 @@ export class DoTodayApiClient implements IDoTodayApiClient {
     protected processCreateList(response: Response): Promise<CreateTaskListResponse> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
+        if (status === 201) {
             return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = CreateTaskListResponse.fromJS(resultData200);
-            return result200;
+            let result201: any = null;
+            let resultData201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result201 = CreateTaskListResponse.fromJS(resultData201);
+            return result201;
             });
         } else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {
@@ -261,7 +261,7 @@ export class DoTodayApiClient implements IDoTodayApiClient {
 
     /**
      * @param body (optional) 
-     * @return OK
+     * @return Created
      */
     createTask(listId: number, body: CreateTaskRequest | undefined): Promise<CreateTaskResponse> {
         let url_ = this.baseUrl + "/api/lists/{listId}/Tasks";
@@ -289,12 +289,12 @@ export class DoTodayApiClient implements IDoTodayApiClient {
     protected processCreateTask(response: Response): Promise<CreateTaskResponse> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
+        if (status === 201) {
             return response.text().then((_responseText) => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = CreateTaskResponse.fromJS(resultData200);
-            return result200;
+            let result201: any = null;
+            let resultData201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result201 = CreateTaskResponse.fromJS(resultData201);
+            return result201;
             });
         } else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {
@@ -354,7 +354,7 @@ export class DoTodayApiClient implements IDoTodayApiClient {
 }
 
 export class CreateTaskListRequest implements ICreateTaskListRequest {
-    name?: string | undefined;
+    name!: string;
 
     constructor(data?: ICreateTaskListRequest) {
         if (data) {
@@ -386,7 +386,7 @@ export class CreateTaskListRequest implements ICreateTaskListRequest {
 }
 
 export interface ICreateTaskListRequest {
-    name?: string | undefined;
+    name: string;
 }
 
 export class CreateTaskListResponse implements ICreateTaskListResponse {
@@ -426,7 +426,7 @@ export interface ICreateTaskListResponse {
 }
 
 export class CreateTaskRequest implements ICreateTaskRequest {
-    title?: string | undefined;
+    title!: string;
 
     constructor(data?: ICreateTaskRequest) {
         if (data) {
@@ -458,7 +458,7 @@ export class CreateTaskRequest implements ICreateTaskRequest {
 }
 
 export interface ICreateTaskRequest {
-    title?: string | undefined;
+    title: string;
 }
 
 export class CreateTaskResponse implements ICreateTaskResponse {

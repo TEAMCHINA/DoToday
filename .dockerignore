@@ -1,0 +1,34 @@
+# Git
+.git
+.gitignore
+
+# IDE
+.vs
+.vscode
+.idea
+*.user
+*.suo
+
+# .NET build artifacts
+**/bin
+**/obj
+**/out
+
+# Node.js
+**/node_modules
+dotoday.client/dist
+
+# Test results
+**/TestResults
+**/coverage
+
+# Docker
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# Misc
+*.md
+*.log
+*.db
+.env*
