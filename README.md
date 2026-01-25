@@ -90,6 +90,27 @@ install the client dependencies.
 5. Open your browser to the frontend URL (e.g., `https://localhost:56604`). The app should
    now be running with the frontend connecting to the backend API.
 
+### Option 3: Docker
+1. Ensure [Docker](https://www.docker.com/get-started) is installed and running
+
+2. Build and start the container:
+   ```bash
+   docker-compose up --build
+   ```
+   Or run in detached mode:
+   ```bash
+   docker-compose up --build -d
+   ```
+
+3. Open your browser to `http://localhost:8080`
+
+The container uses a Docker volume (`dotoday-data`) to persist the SQLite database between restarts.
+
+To stop the container:
+```bash
+docker-compose down
+```
+
 ### Running Tests
 
 **Backend tests:**
@@ -226,8 +247,12 @@ of a brainstorming area.
 - Details view - if we add more fields, ie. a description, to tasks/lists, we'll need a view for it
 
 ### TO DO
-[ ] - Containerize
+[x] - Containerize
 
 ## References
-- https://tanstack.com/query/latest
-- https://www.typeonce.dev/course/effect-beginners-complete-getting-started/testing-with-services/vitest-and-msw-testing-setup)
+This is not a comprehensive list of web resources, I looked up syntax for things like Docker and
+Docker compose syntax, Material UI references, etc. but those were more of refreshers/reference
+lookups, the interesting reads for this project were:
+
+- React Query - https://tanstack.com/query/latest
+- Vite/ViTest - https://www.typeonce.dev/course/effect-beginners-complete-getting-started/testing-with-services/vitest-and-msw-testing-setup
