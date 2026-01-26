@@ -15,7 +15,9 @@ import {
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { AddItemInput } from '@/components/AddItemInput';
+import { ConnectionIndicator } from '@/components/ConnectionIndicator';
 import { DoTodayApiClient, CreateTaskRequest, UpdateTaskRequest } from '@/api/DoTodayApiClient';
+import { useListGroupSync } from '@/hooks/useSignalR';
 
 const apiClient = new DoTodayApiClient();
 
@@ -23,6 +25,8 @@ export function ListDetailPage() {
   const { listId } = useParams<{ listId: string }>();
   const queryClient = useQueryClient();
   const listIdNum = listId ? parseInt(listId, 10) : 0;
+
+  useListGroupSync(listIdNum);
 
   const { data: list, isLoading } = useQuery({
     queryKey: ['list', listIdNum],
@@ -86,6 +90,7 @@ export function ListDetailPage() {
 
       <Typography variant="h4" component="h1" gutterBottom>
         {list.name}
+        <ConnectionIndicator />
       </Typography>
 
       <Paper>

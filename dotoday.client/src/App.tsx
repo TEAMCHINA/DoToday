@@ -5,8 +5,20 @@ import { ListsPage } from '@/pages/ListsPage';
 import { ListDetailPage } from '@/pages/ListDetailPage';
 import { createTheme, CssBaseline, useMediaQuery } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
+import { useSignalRSync } from '@/hooks/useSignalR';
 
 const queryClient = new QueryClient();
+
+function AppContent() {
+  useSignalRSync();
+
+  return (
+    <Routes>
+      <Route path="/" element={<ListsPage />} />
+      <Route path="/lists/:listId" element={<ListDetailPage />} />
+    </Routes>
+  );
+}
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -38,10 +50,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<ListsPage />} />
-            <Route path="/lists/:listId" element={<ListDetailPage />} />
-          </Routes>
+          <AppContent />
         </BrowserRouter>
       </ThemeProvider>
     </QueryClientProvider>

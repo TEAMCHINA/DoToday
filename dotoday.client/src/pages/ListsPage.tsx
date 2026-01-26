@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { AddItemInput } from '@/components/AddItemInput';
+import { ConnectionIndicator } from '@/components/ConnectionIndicator';
 import { DoTodayApiClient, CreateTaskListRequest } from '@/api/DoTodayApiClient';
 
 const apiClient = new DoTodayApiClient();
@@ -65,6 +66,7 @@ export function ListsPage() {
     <Container maxWidth="md" sx={{ mt: 4 }}>
       <Typography variant="h4" component="h1" gutterBottom>
         My Lists
+        <ConnectionIndicator />
       </Typography>
 
       <TableContainer component={Paper}>
