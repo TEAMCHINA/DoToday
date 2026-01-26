@@ -252,7 +252,7 @@ of a brainstorming area.
 
 ### TO DO
 [x] - Containerize
-[ ] - Real time updates
+[x] - Real time updates
 
 ## References
 This is not a comprehensive list of web resources, I looked up syntax for things like Docker and
