@@ -11,8 +11,9 @@ deployed and if anyone ends up wanting this functionality they can manage their 
 
 The notes in this doc serve as an explanation to reviewers of some of my thought processes, some of
 the assumptions I made and reasoning behind the opinions that shaped this code. Because this is a
-public repo, I also plan to use it as an educational tool, as well as a learning tool, in my
-personal community of developer friends.
+public repo, I also plan to use it as an educational tool, as well as a learning tool in my
+personal community of developer friends as a visual tool/discussion points, especially as some of
+our more junior friends skill up.
 
 "DoToday" because I'm terrible at branding and naming.
 
@@ -104,7 +105,8 @@ install the client dependencies.
 
 3. Open your browser to `http://localhost:8080`
 
-The container uses a Docker volume (`dotoday-data`) to persist the SQLite database between restarts.
+The container uses a Docker volume (`dotoday-data`) to persist the SQLite database between
+restarts.
 
 To stop the container:
 ```bash
@@ -242,17 +244,21 @@ of a brainstorming area.
   names and null/empty names (though those are blocked at the controller level by Data Annotations,
   the service could still test for those values) but in the interest of time and brevity, those
   tests have been omitted for now.
-- Auth/Users? - if we intend to support a multi-user scenario
+- Auth/Users? - if we intend to support a multi-user scenario, I'm personally handling auth through
+  oauth in my Caddy reverse proxy on my deployment but if we want per user lists we'll need to
+  integrate.
 - Audit logging - (Who added what? Who said something was done?)
 - Details view - if we add more fields, ie. a description, to tasks/lists, we'll need a view for it
 
 ### TO DO
 [x] - Containerize
+[ ] - Real time updates
 
 ## References
 This is not a comprehensive list of web resources, I looked up syntax for things like Docker and
 Docker compose syntax, Material UI references, etc. but those were more of refreshers/reference
-lookups, the interesting reads for this project were:
+lookups, this is more to track the interesting reads for this project for myself, for future
+reference:
 
 - React Query - https://tanstack.com/query/latest
 - Vite/ViTest - https://www.typeonce.dev/course/effect-beginners-complete-getting-started/testing-with-services/vitest-and-msw-testing-setup
