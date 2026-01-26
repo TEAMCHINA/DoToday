@@ -9,10 +9,12 @@ namespace DoToday.Server.Controllers;
 public class TasksController : ControllerBase
 {
     private readonly ITaskService _service;
+    private readonly ISyncNotificationService _syncNotificationService;
 
-    public TasksController(ITaskService service)
+    public TasksController(ITaskService service, ISyncNotificationService syncNotificationService)
     {
         _service = service;
+        _syncNotificationService = syncNotificationService;
     }
 
     [HttpPost(Name = "CreateTask")]
@@ -22,6 +24,7 @@ public class TasksController : ControllerBase
         var task = await _service.CreateTaskAsync(listId, request);
         if (task == null) return NotFound(new { message = "List not found" });
 
+        await _syncNotificationService.NotifyTaskCreatedAsync(listId, task.Id);
         var response = new CreateTaskResponse { Task = task };
         return Created(string.Empty, response);
     }
@@ -32,6 +35,7 @@ public class TasksController : ControllerBase
         var task = await _service.UpdateTaskStatusAsync(listId, taskId, request);
         if (task == null) return NotFound();
 
+        await _syncNotificationService.NotifyTaskUpdatedAsync(listId, taskId);
         return Ok(new UpdateTaskResponse { Task = task });
     }
 }

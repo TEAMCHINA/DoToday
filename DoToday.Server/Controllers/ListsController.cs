@@ -10,10 +10,12 @@ namespace DoToday.Server.Controllers;
 public class ListsController : ControllerBase
 {
     private readonly ITaskListService _service;
+    private readonly ISyncNotificationService _syncNotificationService;
 
-    public ListsController(ITaskListService service)
+    public ListsController(ITaskListService service, ISyncNotificationService syncNotificationService)
     {
         _service = service;
+        _syncNotificationService = syncNotificationService;
     }
 
     [HttpGet(Name = "GetLists")]
@@ -39,6 +41,7 @@ public class ListsController : ControllerBase
         try
         {
             var list = await _service.CreateListAsync(request);
+            await _syncNotificationService.NotifyListCreatedAsync(list.Id);
             var response = new CreateTaskListResponse { List = list };
             return CreatedAtAction(nameof(GetById), new { id = list.Id }, response);
         }
@@ -56,6 +59,7 @@ public class ListsController : ControllerBase
             var list = await _service.UpdateListAsync(id, request);
             if (list == null) return NotFound();
 
+            await _syncNotificationService.NotifyListUpdatedAsync(id);
             return Ok(new UpdateTaskListResponse { List = list });
         }
         catch (InvalidOperationException ex)
@@ -70,6 +74,7 @@ public class ListsController : ControllerBase
         var deleted = await _service.DeleteListAsync(id);
         if (!deleted) return NotFound();
 
+        await _syncNotificationService.NotifyListDeletedAsync(id);
         return NoContent();
     }
 }
