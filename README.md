@@ -131,7 +131,9 @@ npm test
 ## Developer Notes
 The goal of this project was to create a small to-do task management app, but I decided that I
 could use a little more organization in my own life, so I added a layer that was not part of the
-initial problem statement: organization of tasks into uniquely named lists.
+initial problem statement: organization of tasks into uniquely named lists. This makes this a more
+usable for my personal life, and I have it in a container deployed onto my network behind a Caddy
+reverse proxy (behind OAuth) so I can access it on the go.
 
 On the server side, this is a pretty straightforward .NET Core WebAPI project leveraging the Entity
 Framework provider for SQLite. I typically build services with the following layers:
@@ -195,14 +197,14 @@ be nice to have.
 
 ### AI (Claude) Usage
 I used this as an opportunity to experiment with Anthropics Claude AI assistant, though in a very
-limited capacity and only on the client side. Previously I've used webpack and jest pretty
-extensively, this was my first project using Vite (it's great) but I figured since I was Googling
-everything (ie. setting up vitest, etc.) I'd see how well Claude did on creating the client tests
-so I prompted it to test the pages and AddItem control. Honestly, I'm pretty impressed with the
-result of the tests though it took some finessing to get it to where it's at. It should be no big
-surprise, but the generated setup and server code is all essentially identical to what I found
-online and the handlers follow the same model from the blog post I was referencing when manually
-setting this up at TypeOnce.dev (link below)
+limited capacity. Previously I've used webpack and jest pretty extensively, this was my first
+project using Vite (it's great) but I figured since I was Googling everything (ie. setting up
+vitest, etc.) I'd see how well Claude did on creating the client tests so I prompted it to test
+the pages and AddItem control. Honestly, I'm pretty impressed with the result of the tests though
+it took some finessing to get it to where it's at. It should be no big surprise, but the generated
+setup and server code is all essentially identical to what I found online and the handlers follow
+the same model from the blog post I was referencing when manually setting this up at TypeOnce.dev
+(link in References below.)
 
 Personally, I prefer as much of the test code to live with each test as possible; in my opinion,
 tests should be as fully self documenting as possible, even if it ends up violating DRY, but I
@@ -210,6 +212,15 @@ like seeing the setup, the inputs and the expected files in one place; scrolling
 even in one large file to see what a test is doing is usually a code smell for me that the test
 might be doing too much, and the mock service worker (server.ts and handlers.ts) being in
 separate files feels like it's toeingthat line.
+
+I ended up having a small bug because the OpenAPI spec wasn't including the 201 response type,
+which caused NSwag to treat 201s as errors. I recognized this from having run into it before but
+I prompted Claude to investigate and while it did correctly identify the root problem, its
+approach to solving the issue was more of a hack. The first suggestion it had was to modify the
+generated client code; then it wanted to update the returned response code from the create
+endpoints to 200 instead of using 201. By the time it suggested what I consider the "correct"
+fix: adding the ProducesResponseType attribute to the endpoints so that the spec would include
+the 201 response code, I had already just done it manually.
 
 ### Entity Framework (ORMs)
 My typical usage of EF (or any ORMs) is more of a placeholder - I like the speed for getting a
