@@ -264,8 +264,8 @@ of a brainstorming area.
 - Details view - if we add more fields, ie. a description, to tasks/lists, we'll need a view for it
 
 ### TO DO
-[x] - Containerize
-[x] - Real time updates
+- [x] - Containerize
+- [x] - Real time updates
 
 ## References
 This is not a comprehensive list of web resources, I looked up syntax for things like Docker and
