@@ -247,6 +247,8 @@ excuse to not know SQL.
 The following features I either haven't had an immediate demand for or didn't have time to
 implement yet. These features aren't necessarily guaranteed to be implemented, but this is kind
 of a brainstorming area.
+- List/Task expiration/due dates. I didn't need this personally and didn't even think of it as a
+  feature until I looked at other ToDo list apps.
 - List cloning
 - Soft delete/hiding lists/tasks
 - More thorough validation - mainly leveraging Data Annotations, sufficient and simple for now
